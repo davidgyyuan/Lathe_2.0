@@ -8,7 +8,7 @@ class Frame(tkinter.Frame):
         """Define frame components and instance variables."""
         tkinter.Frame.__init__(self, parent)
         self.parent = parent
-        self.button = tkinter.Button(text='Go', command=comp)
+
         self.initialize_user_interface()
 
         # Ensures GUI starts at front.
@@ -24,8 +24,6 @@ class Frame(tkinter.Frame):
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.config(background="white")
 
-        self.button.pack()
-
     def complain(self, string):
         """Prints out problems to user in pop-up window."""
         top = tkinter.Toplevel(master=self.parent)
@@ -35,8 +33,3 @@ class Frame(tkinter.Frame):
         button = tkinter.Button(top, text="Dismiss", command=top.destroy)
         button.pack()
 
-
-if __name__ == "__main__":
-    root = tkinter.Tk()
-    mainFrame = Frame(root)
-    root.mainloop()
