@@ -18,7 +18,16 @@ def is_accepting_input():
     """"
     :return: Boolean representing if the Arduino is ready to accept an input.
     """
-    return ser.readline().startswith(b'y')
+    status = ser.read(2)
+    return status[0] == 84
+
+
+def is_powered():
+    """"
+    :return: Boolean representing if the server board is powered.
+    """
+    status = ser.read(2)
+    return status[1] == 84
 
 if __name__ == '__main__':
     write('50')

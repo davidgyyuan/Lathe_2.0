@@ -25,11 +25,13 @@ class Frame(tkinter.Frame):
         self.parent.config(background="white")
 
     def complain(self, string):
-        """Prints out problems to user in pop-up window."""
+        """
+        Prints out problems to user in pop-up window.
+        :param string: The string to be displayed to the user.
+        """
         top = tkinter.Toplevel(master=self.parent)
-        top.title("Something went wrong ")
+        top.title("Something went wrong...")
         msg = tkinter.Message(top, text=string, width=1000)
         msg.pack(side="top", padx=10, pady=10)
         button = tkinter.Button(top, text="Dismiss", command=top.destroy)
         button.pack()
-
