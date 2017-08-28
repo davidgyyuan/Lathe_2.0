@@ -1,4 +1,5 @@
 import tkinter
+from tkinter import filedialog
 import platform
 import os
 
@@ -8,6 +9,12 @@ class Frame(tkinter.Frame):
         """Define frame components and instance variables."""
         tkinter.Frame.__init__(self, parent)
         self.parent = parent
+        self.row_counter = -1
+        self.file = None
+
+        self.filename_text = tkinter.StringVar()
+        self.file_label = tkinter.Label(textvariable=self.filename_text)
+        self.file_select_button = tkinter.Button(text="Select File", command=self.select_file)
 
         self.initialize_user_interface()
 
@@ -24,7 +31,17 @@ class Frame(tkinter.Frame):
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.config(background="white")
 
-    def complain(self, string):
+        self.filename_text.set("File: None")
+        self.file_label.grid(row=self.count(1), sticky=tkinter.NW)
+        self.file_select_button.grid(row=self.count(1), sticky=tkinter.NW)
+
+    def select_file(self):
+        """Brings up file selector and sets self.file"""
+        filename = filedialog.askopenfilename()
+        self.file = open(filename, "r")
+        self.filename_text.set("File: " + os.path.basename(self.file.name))
+
+    def complain(self, string: str):
         """
         Prints out problems to user in pop-up window.
         :param string: The string to be displayed to the user.
@@ -35,3 +52,12 @@ class Frame(tkinter.Frame):
         msg.pack(side="top", padx=10, pady=10)
         button = tkinter.Button(top, text="Dismiss", command=top.destroy)
         button.pack()
+
+    def count(self, newline: int):
+        """
+        :param newline: Counter increments by how much.
+        :return: Current count.
+        """
+        if newline:
+            self.row_counter += 1
+        return self.row_counter
