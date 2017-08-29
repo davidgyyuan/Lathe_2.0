@@ -1,5 +1,6 @@
 import serial
 
+
 class Comms:
     def __init__(self, device: str):
         """
@@ -30,4 +31,3 @@ class Comms:
         """
         status = self.ser.read(2)
         return status[1] == 84
-
