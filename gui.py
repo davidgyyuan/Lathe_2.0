@@ -1,8 +1,9 @@
+import comms
 import tkinter
 from tkinter import filedialog
 import platform
 import os
-
+import subprocess
 
 class Frame(tkinter.Frame):
     def __init__(self, parent):
@@ -11,14 +12,17 @@ class Frame(tkinter.Frame):
         self.parent = parent
         self.row_counter = -1
         self.file = None
+        self.filename_text = tkinter.StringVar()
+        self.serial_options = subprocess.getoutput("ls /dev/cu.*").split("\n")
+        self.serial_choice = tkinter.StringVar()
 
         self.file_frame = tkinter.Frame()
         self.begin_frame = tkinter.Frame()
 
-        self.filename_text = tkinter.StringVar()
         self.file_label = tkinter.Label(self.file_frame, textvariable=self.filename_text)
         self.file_select_button = tkinter.Button(self.file_frame, text="Select File", command=self.select_file)
         self.begin_button = tkinter.Button(self.begin_frame, text="Start Print", command=self.start_print)
+        self.serial_drop = tkinter.OptionMenu(parent, self.serial_choice, *self.serial_options)
 
         self.initialize_user_interface()
 
@@ -36,6 +40,12 @@ class Frame(tkinter.Frame):
         self.parent.config(background="white")
 
         self.filename_text.set("File: None")
+        for option in self.serial_options:
+            self.serial_choice.set(option)
+            if 'usbmodem' in option:
+                break
+
+        self.serial_drop.pack(fill=tkinter.X)
 
         self.file_frame.pack()
         self.file_label.pack(side=tkinter.LEFT)
@@ -52,7 +62,7 @@ class Frame(tkinter.Frame):
 
     def start_print(self):
         """Begins the printing process"""
-        pass
+        port = comms.Comms(self.serial_choice.get())
 
     def complain(self, string: str):
         """
