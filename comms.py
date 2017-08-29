@@ -3,7 +3,7 @@ import serial
 ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 
 
-def write(degrees):
+def write(degrees: str):
     """
     Writes to Arduino a number in string format.
     :param degrees: A string that can be parsed to an int

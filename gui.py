@@ -12,9 +12,13 @@ class Frame(tkinter.Frame):
         self.row_counter = -1
         self.file = None
 
+        self.file_frame = tkinter.Frame()
+        self.begin_frame = tkinter.Frame()
+
         self.filename_text = tkinter.StringVar()
-        self.file_label = tkinter.Label(textvariable=self.filename_text)
-        self.file_select_button = tkinter.Button(text="Select File", command=self.select_file)
+        self.file_label = tkinter.Label(self.file_frame, textvariable=self.filename_text)
+        self.file_select_button = tkinter.Button(self.file_frame, text="Select File", command=self.select_file)
+        self.begin_button = tkinter.Button(self.begin_frame, text="Start Print", command=self.start_print)
 
         self.initialize_user_interface()
 
@@ -32,14 +36,23 @@ class Frame(tkinter.Frame):
         self.parent.config(background="white")
 
         self.filename_text.set("File: None")
-        self.file_label.grid(row=self.count(1), sticky=tkinter.NW)
-        self.file_select_button.grid(row=self.count(1), sticky=tkinter.NW)
+
+        self.file_frame.pack()
+        self.file_label.pack(side=tkinter.LEFT)
+        self.file_select_button.pack(side=tkinter.LEFT)
+
+        self.begin_frame.pack()
+        self.begin_button.pack()
 
     def select_file(self):
         """Brings up file selector and sets self.file"""
         filename = filedialog.askopenfilename()
         self.file = open(filename, "r")
         self.filename_text.set("File: " + os.path.basename(self.file.name))
+
+    def start_print(self):
+        """Begins the printing process"""
+        pass
 
     def complain(self, string: str):
         """
@@ -52,12 +65,3 @@ class Frame(tkinter.Frame):
         msg.pack(side="top", padx=10, pady=10)
         button = tkinter.Button(top, text="Dismiss", command=top.destroy)
         button.pack()
-
-    def count(self, newline: int):
-        """
-        :param newline: Counter increments by how much.
-        :return: Current count.
-        """
-        if newline:
-            self.row_counter += 1
-        return self.row_counter
